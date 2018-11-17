@@ -16,6 +16,8 @@ public class Bank {
     private final long endTime;
     private double timeTaken;
     private final int accountCount;
+    private ArrayList<TransactionSet> transactionSets;
+    private final int transactionCount=1000000;
 
     public Bank(int accountCount, int threads){
 
@@ -24,9 +26,11 @@ public class Bank {
         random=new Random();
         executorService=Executors.newFixedThreadPool(threads);
         this.accountCount=accountCount;
+        this.transactionSets=new ArrayList<>();
 
         buildAccounts();
         buildTransactions();
+        buildTransactionSets();
 
         startTime=System.currentTimeMillis();
         executeTransactions();
@@ -35,10 +39,26 @@ public class Bank {
         timeTaken=(timeTaken/1000);
     }
 
+    private void buildTransactionSets() {
+
+        TransactionSet currentTransactionSet=new TransactionSet();
+        for (int i = 0; i < transactionCount; i++) {
+
+            int numberOfTasks=100;
+
+            if(i%(transactionCount/numberOfTasks)==0){
+                transactionSets.add(new TransactionSet());
+                currentTransactionSet=transactionSets.get(transactionSets.size()-1);
+            }
+
+            currentTransactionSet.addTransaction(transactions.get(i));
+        }
+    }
+
     private void executeTransactions(){
         try{
-            for(Transaction transaction: transactions){
-                executorService.execute(transaction);
+            for(TransactionSet transactionSet: transactionSets){
+                executorService.execute(transactionSet);
             }
 
             if(!executorService.isTerminated()){
@@ -61,22 +81,11 @@ public class Bank {
 
     private void buildTransactions(){
 
-//        for (int i = 0; i < accountCount; i++) {
-//
-//            for (int j = 0; j < accountCount; j++) {
-//
-//                if(i!=j){
-//                    transactions.add(new Transaction(accounts.get(i),accounts.get(j), randomFundsTransfer()));
-//                }
-//            }
-//        }
-
         for (int k = 0; k < 1000000; k++) {
             int i=random.nextInt(accountCount);
             int j=random.nextInt(accountCount);
             transactions.add(new Transaction(accounts.get(i),accounts.get(j),randomFundsTransfer()));
         }
-
     }
 
     private double randomFunds() {

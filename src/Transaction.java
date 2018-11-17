@@ -1,7 +1,7 @@
-public class Transaction implements Runnable{
+public class Transaction {
 
-    private volatile Account sender;
-    private volatile Account receiver;
+    private Account sender;
+    private Account receiver;
     private double fundTransfer;
     private boolean successful;
 
@@ -11,21 +11,15 @@ public class Transaction implements Runnable{
         this.fundTransfer=fundTransfer;
     }
 
-    private void performTransaction(){
+    public void performTransaction(){
 
         try {
-            synchronized (this){
-                sender.debit(fundTransfer);
-                receiver.credit(fundTransfer);
-            }
+
+            sender.debit(fundTransfer);
+            receiver.credit(fundTransfer);
             successful=true;
         } catch (InsufficientFundsException e) {
             successful=false;
         }
-    }
-
-    @Override
-    public void run() {
-        performTransaction();
     }
 }

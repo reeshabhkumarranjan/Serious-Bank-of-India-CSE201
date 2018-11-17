@@ -3,10 +3,11 @@ public class Main {
     public static void main(String[] args) {
 	// write your code here
 
-        Bank bank1=new Bank(10000,1);
-        Bank bank2=new Bank(10000,2);
-        Bank bank3=new Bank(10000,3);
-        Bank bank4=new Bank(10000,4);
+        int accountCount=100;
+        Bank bank1=new Bank(accountCount,1);
+        Bank bank2=new Bank(accountCount,2);
+        Bank bank3=new Bank(accountCount,3);
+        Bank bank4=new Bank(accountCount,4);
 
         System.out.println("One thread: "+bank1.getTimeTaken());
         System.out.println("Two threads: "+bank2.getTimeTaken());

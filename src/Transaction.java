@@ -1,7 +1,7 @@
 public class Transaction {
 
-    private Account sender;
-    private Account receiver;
+    private volatile Account sender;
+    private volatile Account receiver;
     private double fundTransfer;
     private boolean successful;
 
@@ -15,8 +15,11 @@ public class Transaction {
 
         try {
 
-            sender.debit(fundTransfer);
-            receiver.credit(fundTransfer);
+            synchronized (this){
+                sender.debit(fundTransfer);
+                receiver.credit(fundTransfer);
+            }
+
             successful=true;
         } catch (InsufficientFundsException e) {
             successful=false;

@@ -1,8 +1,17 @@
 public class Main {
 
+    public static int passed=0;
+    public static int failed=0;
+
     public static void main(String[] args) {
 	// write your code here
 
+        for (int i = 0; i < 100; i++) {
+            runSimulation();
+        }
+    }
+
+    public static void runSimulation(){
         int accountCount=10000;
         Bank bank1=new Bank(accountCount,1);
         Bank bank2=new Bank(accountCount,2);
@@ -20,9 +29,13 @@ public class Main {
 
         if(cond1&&cond2&&cond3){
             System.out.println("Processing PASSED");
+            passed++;
         }
         else{
             System.out.println("Processing FAILED");
+            failed++;
         }
+
+        System.out.println("Success rate: "+((double)passed/(passed+failed)*100)+"\n");
     }
 }

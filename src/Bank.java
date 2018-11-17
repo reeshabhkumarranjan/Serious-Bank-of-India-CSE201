@@ -44,7 +44,8 @@ public class Bank {
         TransactionSet currentTransactionSet=new TransactionSet();
         for (int i = 0; i < transactionCount; i++) {
 
-            int numberOfTasks=100;
+            // int numberOfTasks=transactionCount<=1000?(int)Math.sqrt(transactionCount):1000;
+            int numberOfTasks=200;
 
             if(i%(transactionCount/numberOfTasks)==0){
                 transactionSets.add(new TransactionSet());
@@ -81,7 +82,7 @@ public class Bank {
 
     private void buildTransactions(){
 
-        for (int k = 0; k < 1000000; k++) {
+        for (int k = 0; k < transactionCount; k++) {
             int i=random.nextInt(accountCount);
             int j=random.nextInt(accountCount);
             transactions.add(new Transaction(accounts.get(i),accounts.get(j),randomFundsTransfer()));

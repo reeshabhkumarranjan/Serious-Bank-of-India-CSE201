@@ -14,30 +14,25 @@ public class Bank {
     private ExecutorService executorService;
     private final long startTime;
     private final long endTime;
-    private final long timeTaken;
+    private double timeTaken;
     private final int accountCount;
-    private double[] expected;
 
-    public Bank(int accountCount){
+    public Bank(int accountCount, int threads){
 
         accounts=new ArrayList<>();
         transactions=new ArrayList<>();
-        expected=new double[accountCount];
         random=new Random();
-        executorService=Executors.newFixedThreadPool(10);
+        executorService=Executors.newFixedThreadPool(threads);
         this.accountCount=accountCount;
 
         buildAccounts();
         buildTransactions();
 
-        System.out.println("Starting simulation.");
         startTime=System.currentTimeMillis();
         executeTransactions();
         endTime=System.currentTimeMillis();
-        System.out.println("Simulation ended.");
         timeTaken=endTime-startTime;
-
-        System.out.println("Time taken (seconds): "+((double)timeTaken/1000));
+        timeTaken=(timeTaken/1000);
     }
 
     private void executeTransactions(){
@@ -66,30 +61,37 @@ public class Bank {
 
     private void buildTransactions(){
 
-        for (int i = 0; i < accountCount; i++) {
+//        for (int i = 0; i < accountCount; i++) {
+//
+//            for (int j = 0; j < accountCount; j++) {
+//
+//                if(i!=j){
+//                    transactions.add(new Transaction(accounts.get(i),accounts.get(j), randomFundsTransfer()));
+//                }
+//            }
+//        }
 
-            for (int j = 0; j < accountCount; j++) {
-
-                if(i!=j){
-                    transactions.add(new Transaction(accounts.get(i),accounts.get(j), randomFundsTransfer()));
-                }
-            }
+        for (int k = 0; k < 1000000; k++) {
+            int i=random.nextInt(accountCount);
+            int j=random.nextInt(accountCount);
+            transactions.add(new Transaction(accounts.get(i),accounts.get(j),randomFundsTransfer()));
         }
+
     }
 
     private double randomFunds() {
-
         return (1000+9000*random.nextDouble());
     }
 
     private String randomName() {
-
-//        return LocalDateTime.now().toString();
         return "User"+(Account.getCount()+1);
     }
 
     private double randomFundsTransfer(){
+        return (500+4000*random.nextDouble());
+    }
 
-        return (1000+4000*random.nextDouble());
+    public double getTimeTaken(){
+        return timeTaken;
     }
 }

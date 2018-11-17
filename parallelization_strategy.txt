@@ -1,0 +1,23 @@
+Author: Reeshabh Kumar Ranjan
+Roll number: 2017086
+
+# Parallelization strategy
+
+I have used the executor service in order to parallelize the transactions.
+Since the Account class need not be modified, I created another class named Transaction.
+Transaction implements Runnable. It has two fields, sender (Account), receiver (Account) and amount to transfer (double).
+Now the sender and receiver are marked as volatile, so that the threads (other Transaction objects) can access the latest updated value available.
+There is a method in the Transaction class, named performTransaction(). The credit() and debit() are synchronised because mutual exclusion must be ensured while updating the fund-amount of the accounts.
+
+The Bank class takes the number of accounts to be generated and the number of threads to request for. The rest is just computation.
+Finally, the time taken with each computation (with increasing number of threads) are retrieved after each processing.
+If the time taken in the computation decreases as number of threads increase, then "Processing PASSED" is printed in the terminal, otherwise "Processing FAILED" is printed.
+
+Sample output:
+ ----------------------
+| One thread: 1.712    |
+| Two threads: 0.973   |
+| Three threads: 0.924 |
+| Four threads: 0.583  |
+| Processing PASSED    |
+ ----------------------

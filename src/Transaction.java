@@ -11,11 +11,13 @@ public class Transaction implements Runnable{
         this.fundTransfer=fundTransfer;
     }
 
-    private synchronized void performTransaction(){
+    private void performTransaction(){
 
         try {
-            sender.debit(fundTransfer);
-            receiver.credit(fundTransfer);
+            synchronized (this){
+                sender.debit(fundTransfer);
+                receiver.credit(fundTransfer);
+            }
             successful=true;
         } catch (InsufficientFundsException e) {
             successful=false;

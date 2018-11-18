@@ -18,11 +18,27 @@ public class Bank {
     private final int accountCount;
     private ArrayList<TransactionSet> transactionSets;
     private final int transactionCount=1000000;
+    private boolean transactionPassed;
+    private double[] expected;
+
+    private void verifyTransactions(){
+
+        transactionPassed=true;
+
+        for (int i = 0; i < accountCount; i++) {
+
+            if(accounts.get(i).getAmount()!=expected[i]){
+                transactionPassed=false;
+                break;
+            }
+        }
+    }
 
     public Bank(int accountCount, int threads){
 
         accounts=new ArrayList<>();
         transactions=new ArrayList<>();
+        expected=new double[accountCount];
         random=new Random();
         executorService=Executors.newFixedThreadPool(threads);
         this.accountCount=accountCount;
@@ -45,7 +61,7 @@ public class Bank {
         for (int i = 0; i < transactionCount; i++) {
 
             // int numberOfTasks=transactionCount<=1000?(int)Math.sqrt(transactionCount):1000;
-            int numberOfTasks=200;
+            int numberOfTasks=100;
 
             if(i%(transactionCount/numberOfTasks)==0){
                 transactionSets.add(new TransactionSet());
@@ -76,7 +92,10 @@ public class Bank {
     private void buildAccounts() {
 
         for (int i = 0; i < accountCount; i++) {
-            accounts.add(new Account(randomName(),randomFunds()));
+
+            double funds=randomFunds();
+            accounts.add(new Account(randomName(),funds));
+            expected[i]=funds;
         }
     }
 
@@ -85,12 +104,16 @@ public class Bank {
         for (int k = 0; k < transactionCount; k++) {
             int i=random.nextInt(accountCount);
             int j=random.nextInt(accountCount);
-            transactions.add(new Transaction(accounts.get(i),accounts.get(j),randomFundsTransfer()));
+            double fundsTransfer=randomFundsTransfer();
+            transactions.add(new Transaction(accounts.get(i),accounts.get(j),fundsTransfer));
+
+            expected[i]-=fundsTransfer;
+            expected[j]+=fundsTransfer;
         }
     }
 
     private double randomFunds() {
-        return (1000+9000*random.nextDouble());
+        return (10000+90000*random.nextDouble());
     }
 
     private String randomName() {
@@ -98,10 +121,14 @@ public class Bank {
     }
 
     private double randomFundsTransfer(){
-        return (500+4000*random.nextDouble());
+        return (400*random.nextDouble());
     }
 
     public double getTimeTaken(){
         return timeTaken;
+    }
+
+    public boolean isTransactionPassed(){
+        return transactionPassed;
     }
 }

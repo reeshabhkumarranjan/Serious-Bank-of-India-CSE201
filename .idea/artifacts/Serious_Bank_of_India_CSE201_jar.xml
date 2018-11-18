@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Serious Bank of India CSE201:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Serious_Bank_of_India_CSE201_jar</output-path>
+    <root id="archive" name="Serious Bank of India CSE201.jar">
+      <element id="module-output" name="Serious Bank of India CSE201" />
+    </root>
+  </artifact>
+</component>

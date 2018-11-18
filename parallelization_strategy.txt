@@ -5,19 +5,33 @@ Roll number: 2017086
 
 I have used the executor service in order to parallelize the transactions.
 Since the Account class need not be modified, I created another class named Transaction.
-Transaction implements Runnable. It has two fields, sender (Account), receiver (Account) and amount to transfer (int).
+It has two fields, sender (Account), receiver (Account) and amount to transfer (int).
 Now the sender and receiver are marked as volatile, so that the threads (other Transaction objects) can access the latest updated value available.
-There is a method in the Transaction class, named performTransaction(). The credit() and debit() are synchronised because mutual exclusion must be ensured while updating the fund-amount of the accounts.
+There is a method in the Transaction class, named performTransaction().
 
-The Bank class takes the number of accounts to be generated and the number of threads to request for. The rest is just computation.
-Finally, the time taken with each computation (with increasing number of threads) are retrieved after each processing.
-If the time taken in the computation decreases as number of threads increase, then "Processing PASSED" is printed in the terminal, otherwise "Processing FAILED" is printed.
+Now, since creating each transaction a task for parallelization will result in 1e7 tasks in hand, I created another class named TransactionSet.
+As name implies, it is a set of transactions. TransactionSet is of Runnable type. I have distributed the 1e7 transactions into 100 transactionSets.
+This way, I have 100 tasks at hand. The reason to do this is if I create 1e7 tasks instead, there will be a lot of overheads that will come along with them, such as huge amound of context-switching.
+
+The Bank class, once initialised, creates all the accounts and performs the transactions. Each transaction is verified (if race condition/memory inconsistency are avoided or not).
+I use an array which corresponds to each account's balance. It updates accordingly as transactions are added in the list of transactions. Once all the transactions are computed,
+I check if the balance of accounts corresponds to as expected in the expected[] array.
 
 Sample output:
- ----------------------
-| One thread: 1.712    |
-| Two threads: 0.973   |
-| Three threads: 0.924 |
-| Four threads: 0.583  |
-| Processing PASSED    |
- ----------------------
+
+-------------------------------------------------------------------------------------------------
+
+Calculating average performance. Please wait. (Takes about 20-30 seconds on Intel Core i5 7200U)
+
+1 Thread(s): 0.389000 seconds
+2 Thread(s): 0.356000 seconds
+3 Thread(s): 0.291000 seconds
+4 Thread(s): 0.237000 seconds
+
+Processing PASSED
+
+Time taken for benchmarking: 17.279 seconds
+
+Process finished with exit code 0
+
+-------------------------------------------------------------------------------------------------

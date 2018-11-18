@@ -7,32 +7,19 @@ import java.util.concurrent.TimeUnit;
 
 public class Bank {
 
+    private final long startTime;
+    private final long endTime;
+    private final int accountCount;
+    private final int transactionCount;
     private ArrayList<Account> accounts;
     private ArrayList<Transaction> transactions;
     private Random random;
     private LocalDateTime localDateTime;
     private ExecutorService executorService;
-    private final long startTime;
-    private final long endTime;
     private double timeTaken;
-    private final int accountCount;
     private ArrayList<TransactionSet> transactionSets;
-    private final int transactionCount;
     private boolean transactionPassed;
     private int[] expected;
-
-    private void verifyTransactions() {
-
-        transactionPassed = true;
-
-        for (int i = 0; i < accountCount; i++) {
-
-            if (accounts.get(i).getAmount() != expected[i]) {
-                transactionPassed = false;
-                break;
-            }
-        }
-    }
 
     public Bank(int accountCount, int threads, int transactionCount) {
 
@@ -57,6 +44,19 @@ public class Bank {
         timeTaken = (timeTaken / 1000);
 
         verifyTransactions();
+    }
+
+    private void verifyTransactions() {
+
+        transactionPassed = true;
+
+        for (int i = 0; i < accountCount; i++) {
+
+            if (accounts.get(i).getAmount() != expected[i]) {
+                transactionPassed = false;
+                break;
+            }
+        }
     }
 
     private void buildTransactionSets() {

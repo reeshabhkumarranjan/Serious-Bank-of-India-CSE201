@@ -1,14 +1,18 @@
 public class Account {
 
+    private static int count = 0;
+    private final int id;
     private String holderName;
     private int amount;
-    private final int id;
-    private static int count = 0;
 
     public Account(String holderName, int amount) {
         this.holderName = holderName;
         this.amount = amount;
         this.id = count++;
+    }
+
+    public static int getCount() {
+        return count;
     }
 
     public String getHolderName() {
@@ -21,10 +25,6 @@ public class Account {
 
     public int getId() {
         return id;
-    }
-
-    public static int getCount() {
-        return count;
     }
 
     public void debit(int delta) throws InsufficientFundsException {

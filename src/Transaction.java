@@ -11,18 +11,60 @@ public class Transaction {
         this.fundTransfer=fundTransfer;
     }
 
+//    public void performTransaction(){
+//
+//        try {
+//            synchronized (sender){
+//                sender.debit(fundTransfer);
+//            }
+//
+//            synchronized (receiver){
+//                receiver.credit(fundTransfer);
+//            }
+//            successful=true;
+//        } catch (InsufficientFundsException e) {
+//            successful=false;
+//        }
+//    }
+
     public void performTransaction(){
 
         try {
 
-            synchronized (this){
-                sender.debit(fundTransfer);
-                receiver.credit(fundTransfer);
+            Account first=sender;
+            Account second=receiver;
+
+            if(first.getId()>second.getId()){
+                Account temp=first;
+                first=second;
+                second=temp;
             }
 
-            successful=true;
+            synchronized (first){
+                synchronized (second){
+
+                    if(sender.getAmount()>=fundTransfer){
+
+                        sender.debit(fundTransfer);
+                        receiver.credit(fundTransfer);
+                        successful=true;
+                    }
+                    else{
+                        successful=false;
+                    }
+                }
+            }
         } catch (InsufficientFundsException e) {
             successful=false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "sender=" + sender +
+                ", receiver=" + receiver +
+                ", fundTransfer=" + fundTransfer +
+                '}';
     }
 }

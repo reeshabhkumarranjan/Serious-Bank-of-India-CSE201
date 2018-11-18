@@ -17,7 +17,7 @@ public class Bank {
     private double timeTaken;
     private final int accountCount;
     private ArrayList<TransactionSet> transactionSets;
-    private final int transactionCount=1000000;
+    private final int transactionCount;
     private boolean transactionPassed;
     private int[] expected;
 
@@ -34,7 +34,7 @@ public class Bank {
         }
     }
 
-    public Bank(int accountCount, int threads){
+    public Bank(int accountCount, int threads, int transactionCount){
 
         accounts=new ArrayList<>();
         transactions=new ArrayList<>();
@@ -43,6 +43,7 @@ public class Bank {
         executorService=Executors.newFixedThreadPool(threads);
         this.accountCount=accountCount;
         this.transactionSets=new ArrayList<>();
+        this.transactionCount=transactionCount;
 
         buildAccounts();
         buildTransactions();
@@ -65,8 +66,8 @@ public class Bank {
 
             // int numberOfTasks=transactionCount<=1000?(int)Math.sqrt(transactionCount):1000;
             int numberOfTasks=100;
-
-            if(i%(transactionCount/numberOfTasks)==0){
+//            int numberOfTasks=(int)Math.sqrt(transactionCount);
+            if(transactionCount<100 || i%(transactionCount/numberOfTasks)==0){
                 transactionSets.add(new TransactionSet());
                 currentTransactionSet=transactionSets.get(transactionSets.size()-1);
             }
@@ -120,15 +121,16 @@ public class Bank {
 //    }
 
     private int randomFunds(){
-        return (10000+random.nextInt(90000));
+        //return (10000+random.nextInt(90000));
+        return 10000;
     }
 
     private int randomFundsTransfer(){
-        return random.nextInt(500);
+        return random.nextInt(10);
     }
 
     private String randomName() {
-        return "User"+(Account.getCount()+1);
+        return "User"+(Account.getCount());
     }
 
 //    private int randomFundsTransfer(){
@@ -141,5 +143,33 @@ public class Bank {
 
     public boolean isTransactionPassed(){
         return transactionPassed;
+    }
+
+    public void printActualAmounts(){
+
+        for (int i = 0; i < accountCount; i++) {
+
+            System.out.print(accounts.get(i).getAmount()+" ");
+        }
+
+        System.out.println();
+    }
+
+    public void printExpectedAmounts(){
+
+        for (int i = 0; i < accountCount; i++) {
+
+            System.out.print(expected[i]+" ");
+        }
+
+        System.out.println();
+    }
+
+    public void printTransactions(){
+
+        for (Transaction transaction :
+                transactions) {
+            System.out.println(transaction);
+        }
     }
 }

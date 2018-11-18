@@ -5,62 +5,45 @@ public class Main {
 
     public static void main(String[] args) {
 
+        long startTime=System.currentTimeMillis();
         runAverageSimulation();
+        long endTime=System.currentTimeMillis();
+        double totalTime=endTime-startTime;
+        double timeInSeconds=totalTime/1000;
+        System.out.println("Time taken for benchmarking: "+timeInSeconds+" seconds");
     }
     
     public static void runAverageSimulation(){
         int accountCount=10000;
         int iterations=10;
+        boolean isPassed=true;
 
         System.out.println("\nCalculating average performance. Please wait. (Takes about 20-30 seconds on Intel Core i5 7200U)\n");
-        double oneThreadPerformance=averageSimulation(1,accountCount,iterations);
-        double twoThreadPerformance=averageSimulation(2,accountCount,iterations);
-        double threeThreadPerformance=averageSimulation(3,accountCount,iterations);
-        double fourThreadPerformance=averageSimulation(4,accountCount,iterations);
+        boolean cond1=averageSimulation(1,accountCount,iterations);
+        boolean cond2=averageSimulation(2,accountCount,iterations);
+        boolean cond3=averageSimulation(3,accountCount,iterations);
+        boolean cond4=averageSimulation(4,accountCount,iterations);
 
-        System.out.println("One thread: "+oneThreadPerformance+" seconds");
-        System.out.println("Two threads: "+twoThreadPerformance+" seconds");
-        System.out.println("Three threads: "+threeThreadPerformance+" seconds");
-        System.out.println("Four threads: "+fourThreadPerformance+" seconds");
+        isPassed=cond1&&cond2&&cond3&&cond4;
+
+        System.out.println(isPassed?"Processing PASSED":"Processing FAILED");
     }
 
-    public static double averageSimulation(int threads, int accountCount, int iterations){
+    public static boolean averageSimulation(int threads, int accountCount, int iterations){
 
         double totalTime=0;
+        boolean allPassed=true;
 
         for (int i = 0; i < iterations; i++) {
-            Bank bank=new Bank(accountCount,threads);
+            Bank bank=new Bank(accountCount,threads,1000000);
             totalTime+=bank.getTimeTaken();
+            allPassed=allPassed&&bank.isTransactionPassed();
         }
 
-        return (totalTime/iterations);
-    }
+        double averageTime=  (totalTime/iterations);
 
-    public static void runSimulation(){
-        int accountCount=10000;
-        Bank bank1=new Bank(accountCount,1);
-        Bank bank2=new Bank(accountCount,2);
-        Bank bank3=new Bank(accountCount,3);
-        Bank bank4=new Bank(accountCount,4);
+        System.out.printf("%d Thread(s): %f seconds\n",threads,averageTime);
 
-        System.out.println("One thread: "+bank1.getTimeTaken()+" seconds");
-        System.out.println("Two threads: "+bank2.getTimeTaken()+" seconds");
-        System.out.println("Three threads: "+bank3.getTimeTaken()+" seconds");
-        System.out.println("Four threads: "+bank4.getTimeTaken()+" seconds");
-
-        boolean cond1=bank1.getTimeTaken()>=bank2.getTimeTaken();
-        boolean cond2=bank2.getTimeTaken()>=bank3.getTimeTaken();
-        boolean cond3=bank3.getTimeTaken()>=bank4.getTimeTaken();
-
-        if(cond1&&cond2&&cond3){
-            System.out.println("Processing PASSED");
-            passed++;
-        }
-        else{
-            System.out.println("Processing FAILED");
-            failed++;
-        }
-
-        System.out.println("Success rate: "+((double)passed/(passed+failed)*100)+"\n");
+        return allPassed;
     }
 }

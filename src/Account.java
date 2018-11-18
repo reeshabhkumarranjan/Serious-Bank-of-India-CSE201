@@ -8,7 +8,7 @@ public class Account {
     public Account(String holderName, int amount) {
         this.holderName = holderName;
         this.amount = amount;
-        this.id=++count;
+        this.id=count++;
     }
 
     public String getHolderName() {
@@ -29,7 +29,7 @@ public class Account {
 
     public void debit(int delta) throws InsufficientFundsException{
 
-        if(delta<amount){
+        if(delta>amount){
             throw new InsufficientFundsException("Account No. "+id+" has insufficient funds.");
         }
 
@@ -41,5 +41,12 @@ public class Account {
 
     public void credit(int delta){
         amount=amount+delta;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                '}';
     }
 }

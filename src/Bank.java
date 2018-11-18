@@ -59,6 +59,18 @@ public class Bank {
         verifyTransactions();
     }
 
+//    private void buildTransactionSets() {
+//        int setSize = 100_0;
+//        transactionSets.add(new TransactionSet());
+//        for (int i = 1; i <= transactionCount - setSize; i += setSize) {
+//            TransactionSet cur = transactionSets.get(transactionSets.size() - 1);
+//            for (int j = i; j <= i + setSize; j++) {
+//                cur.addTransaction(transactions.get(j - 1));
+//            }
+//            transactionSets.add(new TransactionSet());
+//        }
+//    }
+
     private void buildTransactionSets() {
 
         TransactionSet currentTransactionSet=new TransactionSet();
@@ -122,7 +134,7 @@ public class Bank {
 
     private int randomFunds(){
         //return (10000+random.nextInt(90000));
-        return 10000;
+        return 1000000000;
     }
 
     private int randomFundsTransfer(){

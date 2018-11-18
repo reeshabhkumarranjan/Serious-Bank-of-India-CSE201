@@ -28,23 +28,30 @@ public class Transaction {
 //    }
 
     public void performTransaction(){
-
+//        System.out.println("MAI GHADHA HU");
         try {
 
-            Account first=sender;
-            Account second=receiver;
+            Account first=null;
+            Account second=null;
 
-            if(first.getId()>second.getId()){
-                Account temp=first;
-                first=second;
-                second=temp;
+            if(sender.getId()>receiver.getId()){
+//                Account temp=first;
+//                first=second;
+//                second=temp;
+                first = sender;
+                second = receiver;
+            } else {
+                first = receiver;
+                second = sender;
             }
 
             synchronized (first){
                 synchronized (second){
 
+//                    System.out.println(sender.getAmount());
+//                    System.out.println(fundTransfer);
                     if(sender.getAmount()>=fundTransfer){
-
+//                        System.out.println("YUMMY");
                         sender.debit(fundTransfer);
                         receiver.credit(fundTransfer);
                         successful=true;

@@ -19,7 +19,7 @@ public class Bank {
     private ArrayList<TransactionSet> transactionSets;
     private final int transactionCount=1000000;
     private boolean transactionPassed;
-    private double[] expected;
+    private int[] expected;
 
     private void verifyTransactions(){
 
@@ -38,7 +38,7 @@ public class Bank {
 
         accounts=new ArrayList<>();
         transactions=new ArrayList<>();
-        expected=new double[accountCount];
+        expected=new int[accountCount];
         random=new Random();
         executorService=Executors.newFixedThreadPool(threads);
         this.accountCount=accountCount;
@@ -51,8 +51,11 @@ public class Bank {
         startTime=System.currentTimeMillis();
         executeTransactions();
         endTime=System.currentTimeMillis();
+
         timeTaken=endTime-startTime;
         timeTaken=(timeTaken/1000);
+
+        verifyTransactions();
     }
 
     private void buildTransactionSets() {
@@ -93,7 +96,7 @@ public class Bank {
 
         for (int i = 0; i < accountCount; i++) {
 
-            double funds=randomFunds();
+            int funds=randomFunds();
             accounts.add(new Account(randomName(),funds));
             expected[i]=funds;
         }
@@ -104,7 +107,7 @@ public class Bank {
         for (int k = 0; k < transactionCount; k++) {
             int i=random.nextInt(accountCount);
             int j=random.nextInt(accountCount);
-            double fundsTransfer=randomFundsTransfer();
+            int fundsTransfer=randomFundsTransfer();
             transactions.add(new Transaction(accounts.get(i),accounts.get(j),fundsTransfer));
 
             expected[i]-=fundsTransfer;
@@ -112,17 +115,25 @@ public class Bank {
         }
     }
 
-    private double randomFunds() {
-        return (10000+90000*random.nextDouble());
+//    private int randomFunds() {
+//        return (10000+90000*random.nextDouble());
+//    }
+
+    private int randomFunds(){
+        return (10000+random.nextInt(90000));
+    }
+
+    private int randomFundsTransfer(){
+        return random.nextInt(500);
     }
 
     private String randomName() {
         return "User"+(Account.getCount()+1);
     }
 
-    private double randomFundsTransfer(){
-        return (400*random.nextDouble());
-    }
+//    private int randomFundsTransfer(){
+//        return (400*random.nextDouble());
+//    }
 
     public double getTimeTaken(){
         return timeTaken;

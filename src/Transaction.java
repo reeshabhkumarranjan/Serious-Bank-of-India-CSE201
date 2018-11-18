@@ -2,10 +2,10 @@ public class Transaction {
 
     private volatile Account sender;
     private volatile Account receiver;
-    private double fundTransfer;
+    private int fundTransfer;
     private boolean successful;
 
-    public Transaction(Account sender, Account receiver, double fundTransfer) {
+    public Transaction(Account sender, Account receiver, int fundTransfer) {
         this.sender = sender;
         this.receiver = receiver;
         this.fundTransfer=fundTransfer;

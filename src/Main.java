@@ -4,20 +4,19 @@ public class Main {
     public static int failed=0;
 
     public static void main(String[] args) {
-	// write your code here
 
-//        for (int i = 0; i < 10; i++) {
-//            runSimulation();
-//        }
-
+        runAverageSimulation();
+    }
+    
+    public static void runAverageSimulation(){
         int accountCount=10000;
         int iterations=10;
 
         System.out.println("\nCalculating average performance. Please wait. (Takes about 20-30 seconds on Intel Core i5 7200U)\n");
-        double oneThreadPerformance=runAverageSimulation(1,accountCount,iterations);
-        double twoThreadPerformance=runAverageSimulation(2,accountCount,iterations);
-        double threeThreadPerformance=runAverageSimulation(3,accountCount,iterations);
-        double fourThreadPerformance=runAverageSimulation(4,accountCount,iterations);
+        double oneThreadPerformance=averageSimulation(1,accountCount,iterations);
+        double twoThreadPerformance=averageSimulation(2,accountCount,iterations);
+        double threeThreadPerformance=averageSimulation(3,accountCount,iterations);
+        double fourThreadPerformance=averageSimulation(4,accountCount,iterations);
 
         System.out.println("One thread: "+oneThreadPerformance+" seconds");
         System.out.println("Two threads: "+twoThreadPerformance+" seconds");
@@ -25,11 +24,9 @@ public class Main {
         System.out.println("Four threads: "+fourThreadPerformance+" seconds");
     }
 
-    public static double runAverageSimulation(int threads, int accountCount, int iterations){
+    public static double averageSimulation(int threads, int accountCount, int iterations){
 
-//        int accountCount=10000;
         double totalTime=0;
-//        int iterations=10;
 
         for (int i = 0; i < iterations; i++) {
             Bank bank=new Bank(accountCount,threads);

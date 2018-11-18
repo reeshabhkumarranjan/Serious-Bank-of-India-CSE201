@@ -3,12 +3,12 @@ public class Account {
     private String holderName;
     private int amount;
     private final int id;
-    private static int count=0;
+    private static int count = 0;
 
     public Account(String holderName, int amount) {
         this.holderName = holderName;
         this.amount = amount;
-        this.id=count++;
+        this.id = count++;
     }
 
     public String getHolderName() {
@@ -27,20 +27,18 @@ public class Account {
         return count;
     }
 
-    public void debit(int delta) throws InsufficientFundsException{
+    public void debit(int delta) throws InsufficientFundsException {
 
-        if(delta>amount){
-            throw new InsufficientFundsException("Account No. "+id+" has insufficient funds.");
-        }
-
-        else{
-            amount=amount-delta;
+        if (delta > amount) {
+            throw new InsufficientFundsException("Account No. " + id + " has insufficient funds.");
+        } else {
+            amount = amount - delta;
         }
 
     }
 
-    public void credit(int delta){
-        amount=amount+delta;
+    public void credit(int delta) {
+        amount = amount + delta;
     }
 
     @Override

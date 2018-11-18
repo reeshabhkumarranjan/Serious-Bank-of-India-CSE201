@@ -8,61 +8,36 @@ public class Transaction {
     public Transaction(Account sender, Account receiver, int fundTransfer) {
         this.sender = sender;
         this.receiver = receiver;
-        this.fundTransfer=fundTransfer;
+        this.fundTransfer = fundTransfer;
     }
 
-//    public void performTransaction(){
-//
-//        try {
-//            synchronized (sender){
-//                sender.debit(fundTransfer);
-//            }
-//
-//            synchronized (receiver){
-//                receiver.credit(fundTransfer);
-//            }
-//            successful=true;
-//        } catch (InsufficientFundsException e) {
-//            successful=false;
-//        }
-//    }
-
-    public void performTransaction(){
-//        System.out.println("MAI GHADHA HU");
+    public void performTransaction() {
         try {
 
-            Account first=null;
-            Account second=null;
+            Account first = sender;
+            Account second = receiver;
 
-            if(sender.getId()>receiver.getId()){
-//                Account temp=first;
-//                first=second;
-//                second=temp;
-                first = sender;
-                second = receiver;
-            } else {
-                first = receiver;
-                second = sender;
+            if (first.getId() > second.getId()) {
+                Account temp = first;
+                first = second;
+                second = temp;
             }
 
-            synchronized (first){
-                synchronized (second){
 
-//                    System.out.println(sender.getAmount());
-//                    System.out.println(fundTransfer);
-                    if(sender.getAmount()>=fundTransfer){
-//                        System.out.println("YUMMY");
+            synchronized (first) {
+                synchronized (second) {
+
+                    if (sender.getAmount() >= fundTransfer) {
                         sender.debit(fundTransfer);
                         receiver.credit(fundTransfer);
-                        successful=true;
-                    }
-                    else{
-                        successful=false;
+                        successful = true;
+                    } else {
+                        successful = false;
                     }
                 }
             }
         } catch (InsufficientFundsException e) {
-            successful=false;
+            successful = false;
         }
     }
 

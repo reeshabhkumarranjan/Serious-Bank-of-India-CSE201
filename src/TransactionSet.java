@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 
-public class TransactionSet implements Runnable{
+public class TransactionSet implements Runnable {
 
     private volatile ArrayList<Transaction> transactions;
 
-    public TransactionSet(){
-        transactions=new ArrayList<>();
+    public TransactionSet() {
+        transactions = new ArrayList<>();
     }
 
-    public void addTransaction(Transaction transaction){
+    public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
     }
 

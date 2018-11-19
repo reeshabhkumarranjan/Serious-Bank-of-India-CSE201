@@ -7,7 +7,7 @@ I have used the executor service in order to parallelize the transactions.
 Since the Account class need not be modified, I created another class named Transaction.
 It has two fields, sender (Account), receiver (Account) and amount to transfer (int).
 Now the sender and receiver are marked as volatile, so that the threads (other Transaction objects) can access the latest updated value available.
-There is a method in the Transaction class, named performTransaction().
+There is a method in the Transaction class, named performTransaction(). It makes sure deadlocks are avoided by lock ordering (on sender and receiver).
 
 Now, since creating each transaction a task for parallelization will result in 1e7 tasks in hand, I created another class named TransactionSet.
 As name implies, it is a set of transactions. TransactionSet is of Runnable type. I have distributed the 1e7 transactions into 100 transactionSets.

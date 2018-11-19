@@ -20,6 +20,7 @@ public final class Bank {
     private ArrayList<TransactionSet> transactionSets;
     private boolean transactionPassed;
     private int[] expected;
+    private int threads;
 
     public Bank(int accountCount, int threads, int transactionCount) {
 
@@ -31,6 +32,7 @@ public final class Bank {
         this.accountCount = accountCount;
         this.transactionSets = new ArrayList<>();
         this.transactionCount = transactionCount;
+        this.threads=threads;
 
         buildAccounts();
         buildTransactions();
@@ -64,8 +66,8 @@ public final class Bank {
         TransactionSet currentTransactionSet = new TransactionSet();
         for (int i = 0; i < transactionCount; i++) {
 
-            int numberOfTasks = 100;
-            if (transactionCount < 100 || i % (transactionCount / numberOfTasks) == 0) {
+            int numberOfTasks = threads*10;
+            if (transactionCount < threads || i % (transactionCount / numberOfTasks) == 0) {
                 transactionSets.add(new TransactionSet());
                 currentTransactionSet = transactionSets.get(transactionSets.size() - 1);
             }

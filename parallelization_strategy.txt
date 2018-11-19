@@ -21,7 +21,7 @@ Sample output:
 
 -------------------------------------------------------------------------------------------------
 
-Calculating average performance. Please wait. (Takes about 20-30 seconds on Intel Core i5 7200U)
+Calculating performance. Please wait.
 
 1 Thread(s): 0.428000 seconds
 Processing PASSED
@@ -31,7 +31,6 @@ Processing PASSED
 Processing PASSED
 4 Thread(s): 0.256000 seconds
 Processing PASSED
-Time taken for benchmarking: 20.894 seconds
 
 Process finished with exit code 0
 

@@ -1,4 +1,4 @@
-public class Transaction {
+public final class Transaction {
 
     private volatile Account sender;
     private volatile Account receiver;

@@ -5,12 +5,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class Bank {
+public final class Bank {
 
     private final long startTime;
     private final long endTime;
     private final int accountCount;
-    private final int transactionCount;
+    private int transactionCount;
     private ArrayList<Account> accounts;
     private ArrayList<Transaction> transactions;
     private Random random;
@@ -94,9 +94,14 @@ public class Bank {
         for (int i = 0; i < accountCount; i++) {
 
             int funds = randomFunds();
-            accounts.add(new Account(randomName(), funds));
+            addAccount(randomName(),funds);
+//            accounts.add(new Account(randomName(), funds));
             expected[i] = funds;
         }
+    }
+
+    public void addAccount(String name, int funds){
+        accounts.add(new Account(name,funds));
     }
 
     private void buildTransactions() {

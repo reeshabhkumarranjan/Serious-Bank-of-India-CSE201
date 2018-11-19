@@ -1,4 +1,4 @@
-public class Account {
+public final class Account {
 
     private static int count = 0;
     private final int id;

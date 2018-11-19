@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class TransactionSet implements Runnable {
+public final class TransactionSet implements Runnable {
 
     private volatile ArrayList<Transaction> transactions;
 

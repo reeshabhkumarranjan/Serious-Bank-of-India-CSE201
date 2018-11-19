@@ -95,7 +95,6 @@ public final class Bank {
 
             int funds = randomFunds();
             addAccount(randomName(),funds);
-//            accounts.add(new Account(randomName(), funds));
             expected[i] = funds;
         }
     }
